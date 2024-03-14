@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Spring Boot Doc Bot</title>
+    <link href="/styles.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container d-flex align-items-center">
+        <img src="/logo.png" alt="Logo" style="width:60px;">
+        <h2 class="ml-3 mb-0 text-white">Welcome to OnboardEase: Your Personal Training Assistant</h2>
+    </div>
+</nav>
+<body style="padding-top: 70px;">
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-5">
+            <form id="uploadForm" enctype="multipart/form-data">
+                <h3 class="text-center mb-3"><h3 class="text-center mb-3">Upload your training documents or enter URLs!</h3></h3>
+                <input type="text" id="linkInput" placeholder="Enter a link and press Enter" class="form-control mb-3">
+                <div id="linkBadges" class="mb-3"></div>
+                <input type="file" name="files" multiple class="form-control mb-3">
+                <button type="button" id="uploadButton" class="btn btn-primary mb-3">Upload</button>
+                <div class="spinner-border text-primary" id="uploadSpinner" style="display: none;"></div>
+                <button type="button" id="ingestButton" disabled class="btn btn-secondary mb-3">Ingest</button>
+                <div class="spinner-border text-secondary" id="ingestSpinner" style="display: none;"></div>
+            </form>
+            <progress id="progressBar" value="0" max="100" class="w-100 mb-3"></progress>
+            <span id="progressText" class="d-block mb-3"></span>
+            <div id="successMessage" class="alert alert-success" role="alert" style="display: none;"></div>
+        </div>
+        <div class="col-2">
+            <hr class="vertical-divider">
+        </div>
+        <div class="col-5">
+            <div class="row">
+                <h3 class="text-center mb-3">Ask your training-related queries here!</h3>
+                <form>
+                    <div class="mb-3">
+                        <label for="questionInput" class="form-label">Question</label>
+                        <input type="text" class="form-control" id="questionInput" name="question" placeholder="Enter your question" required>
+                    </div>
+                    <div class="mb-3 text-center">
+                        <button id="submitBtn" type="button" class="btn btn-primary">Ask!</button>
+                        <button id="clearBtn" type="button" class="btn btn-secondary">Clear</button>
+                    </div>
+                </form>
+            </div>
+            <div class="row my-5">
+                <label for="answerBox" class="form-label"><h5>Answer</h5></label>
+                <div class="position-relative my-3">
+                    <textarea class="form-control" rows="10" id="answerBox" disabled></textarea>
+                    <a href="#" class="position-absolute top-0 end-0 m-2" id="copyBtn">
+                        <i class="far fa-copy"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer class="footer mt-auto py-3 bg-dark text-white">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+            <span id="footer-text">Made with ❤️ in </span>
+            <div>
+                <a href="https://www.linkedin.com/in/miliariadnane" target="_blank" class="text-white">
+                    <i class="fab fa-linkedin fa-2x"></i>
+                </a>
+                <a href="https://twitter.com/miliariadnane" target="_blank" class="text-white ml-2">
+                    <i class="fab fa-twitter fa-2x"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+    var links = [];
+
+    document.getElementById('linkInput').addEventListener('keydown', function (event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+
+            links.push(this.value);
+
+            var badge = document.createElement('span');
+            badge.className = 'badge bg-primary m-1';
+            badge.textContent = 'Link ' + links.length;
+
+            var removeButton = document.createElement('button');
+            removeButton.className = 'btn-close btn-close-white';
+            removeButton.type = 'button';
+            removeButton.setAttribute('aria-label', 'Close');
+            removeButton.addEventListener('click', function () {
+                var index = links.indexOf(badge.textContent);
+                if (index > -1) {
+                    links.splice(index, 1);
+                }
+
+                badge.remove();
+            });
+
+            badge.appendChild(removeButton);
+
+            document.getElementById('linkBadges').appendChild(badge);
+
+            this.value = '';
+        }
+    });
+
+    document.getElementById('uploadButton').addEventListener('click', function(event) {
+        event.preventDefault();
+
+        var formData = new FormData();
+        var files = document.querySelector('input[type=file]').files;
+        for (var i = 0; i < files.length; i++) {
+            formData.append('files', files[i]);
+        }
+        for (var i = 0; i < links.length; i++) {
+            formData.append('url', links[i]);
+        }
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/upload', true);
+
+        document.getElementById('uploadSpinner').style.display = 'inline-block';
+
+        xhr.onload = function() {
+            document.getElementById('uploadSpinner').style.display = 'none';
+
+            if (xhr.status === 200) {
+                swal("Success", "Files uploaded successfully", "success");
+                document.getElementById('ingestButton').disabled = false;
+            } else {
+                swal("Error", "File upload failed", "error");
+            }
+        };
+
+        xhr.send(formData);
+    });
+
+    document.getElementById('ingestButton').addEventListener('click', function(event) {
+        event.preventDefault();
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/ingest', true);
+
+        document.getElementById('ingestSpinner').style.display = 'inline-block';
+
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                swal({
+                    title: "Ingestion started",
+                    text: "Please wait... Ingestion is in progress",
+                    icon: "info",
+                    button: false,
+                    closeOnClickOutside: false,
+                    closeOnEsc: false
+                });
+
+                // Start polling for progress
+                var progressInterval = setInterval(function() {
+                    $.get('/progress', function(data) {
+                        document.getElementById('progressBar').value = data;
+                        document.getElementById('progressText').textContent = data + '%';
+
+                        if (data >= 100) {
+                            clearInterval(progressInterval);
+                            document.getElementById('ingestSpinner').style.display = 'none';
+                            swal("Success", "Ingestion completed successfully. You can start asking the model.", "success");
+                            document.getElementById('submitBtn').disabled = false;
+                            document.getElementById('clearBtn').disabled = false;
+                        }
+                    });
+                }, 500); // Poll every 1 second
+            } else {
+                document.getElementById('ingestSpinner').style.display = 'none';
+                swal("Error", "Ingestion failed", "error");
+            }
+        };
+
+        xhr.send();
+    });
+
+    $(document).ready(function () {
+        $("#submitBtn").click(function () {
+            let questionValue = $("#questionInput").val();
+            if (!questionValue) {
+                swal("Warning", "Please enter your question", "warning");
+                return;
+            }
+
+            $("#answerBox").val('Please wait... fetching answer...');
+
+            $.ajax({
+                type: "POST",
+                url: "/ask",
+                data: JSON.stringify({ question: $("#questionInput").val() }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "text",
+                success: function (data) {
+                    //console.log(typeof data);
+                    //console.log(data);
+                    $("#answerBox").val(data);
+                },
+                error: function (errMsg) {
+                    alert(errMsg);
+                }
+            });
+        });
+
+        $("#clearBtn").click(function () {
+            $("#questionInput").val('');
+            $("#answerBox").val('');
+        });
+
+        document.getElementById("copyBtn").addEventListener("click", function() {
+            var copyText = document.getElementById("answerBox");
+
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+
+            document.execCommand("copy");
+
+            alert("Copied: " + copyText.value);
+        });
+
+        document.getElementById('submitBtn').disabled = true;
+        document.getElementById('clearBtn').disabled = true;
+    });
+
+    document.getElementById('footer-text').textContent += new Date().getFullYear();
+</script>
+</body>
+</html>

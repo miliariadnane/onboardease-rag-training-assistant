@@ -1,0 +1,4 @@
+langchain:
+  api:
+    key: demo
+  timeout: 30
