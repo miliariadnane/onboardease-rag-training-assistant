@@ -6,6 +6,7 @@ import dev.langchain4j.memory.ChatMemory;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 import dev.langchain4j.model.embedding.AllMiniLmL6V2EmbeddingModel;
 import dev.langchain4j.model.embedding.EmbeddingModel;
+import dev.langchain4j.model.input.PromptTemplate;
 import dev.langchain4j.model.openai.OpenAiChatModel;
 import dev.langchain4j.retriever.EmbeddingStoreRetriever;
 import dev.langchain4j.store.embedding.EmbeddingStore;
@@ -17,6 +18,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.time.Duration;
+
+import static dev.nano.tptragbot.Constant.PROMPT_TEMPLATE;
 
 @Configuration
 @RequiredArgsConstructor
@@ -42,7 +45,7 @@ public class LangChainConfiguration {
                         .timeout(Duration.ofSeconds(timeout))
                         .build()
                 )
-                //.promptTemplate(PromptTemplate.from(PROMPT_TEMPLATE))
+                .promptTemplate(PromptTemplate.from(PROMPT_TEMPLATE))
                 .retriever(EmbeddingStoreRetriever.from(embeddingStore, embeddingModel))
                 .chatMemory(chatMemory)
                 .build();
