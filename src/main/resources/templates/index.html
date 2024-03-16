@@ -38,7 +38,7 @@
         <div class="col-2">
             <hr class="vertical-divider">
         </div>
-        <div class="col-5">
+        <!--<div class="col-5">
             <div class="row">
                 <h3 class="text-center mb-3">Ask your training-related queries here!</h3>
                 <form>
@@ -60,6 +60,29 @@
                         <i class="far fa-copy"></i>
                     </a>
                 </div>
+            </div>
+        </div>-->
+        <div class="col-5">
+            <div class="row">
+                <h3 class="text-center mb-3">Ask your training-related queries here!</h3>
+                <div id="chatBox" class="mb-3" style="height: 400px; overflow-y: auto; border: 1px solid #ccc; padding: 10px;">
+                    <!-- Chat messages will be added here dynamically -->
+                </div>
+                <div id="loadingSpinner" style="display: none;">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                <form id="chatForm">
+                    <div class="mb-3">
+                        <label for="questionInput" class="form-label">Question</label>
+                        <input type="text" class="form-control" id="questionInput" name="question" placeholder="Enter your question" required>
+                    </div>
+                    <div class="mb-3 text-center">
+                        <button id="submitBtn" type="button" class="btn btn-primary">Send</button>
+                        <button id="clearBtn" type="button" class="btn btn-secondary">Clear</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -190,6 +213,34 @@
         xhr.send();
     });
 
+    function appendMessage(message, sender) {
+        var messageElement = document.createElement('div');
+        messageElement.className = 'message ' + (sender === 'user' ? 'user-message' : 'bot-message');
+
+        var avatarElement = document.createElement('img');
+        avatarElement.src = sender === 'user' ? '/images/avatar.svg' : '/images/bot.svg';
+        avatarElement.className = 'avatar';
+
+        var textElement = document.createElement('span');
+        textElement.textContent = message;
+
+        messageElement.appendChild(avatarElement);
+        messageElement.appendChild(textElement);
+
+        if (sender === 'bot') {
+            var copyButton = document.createElement('button');
+            copyButton.className = 'btn btn-link';
+            copyButton.innerHTML = '<i class="fas fa-copy"></i>';
+            copyButton.addEventListener('click', function () {
+                navigator.clipboard.writeText(message);
+            });
+
+            messageElement.appendChild(copyButton);
+        }
+
+        document.getElementById('chatBox').appendChild(messageElement);
+    }
+
     $(document).ready(function () {
         $("#submitBtn").click(function () {
             let questionValue = $("#questionInput").val();
@@ -198,7 +249,8 @@
                 return;
             }
 
-            $("#answerBox").val('Please wait... fetching answer...');
+            appendMessage(questionValue, 'user');
+            document.getElementById('loadingSpinner').style.display = 'block';
 
             $.ajax({
                 type: "POST",
@@ -209,9 +261,11 @@
                 success: function (data) {
                     //console.log(typeof data);
                     //console.log(data);
-                    $("#answerBox").val(data);
+                    document.getElementById('loadingSpinner').style.display = 'none';
+                    appendMessage(data, 'bot');
                 },
                 error: function (errMsg) {
+                    document.getElementById('loadingSpinner').style.display = 'none';
                     alert(errMsg);
                 }
             });
@@ -220,17 +274,6 @@
         $("#clearBtn").click(function () {
             $("#questionInput").val('');
             $("#answerBox").val('');
-        });
-
-        document.getElementById("copyBtn").addEventListener("click", function() {
-            var copyText = document.getElementById("answerBox");
-
-            copyText.select();
-            copyText.setSelectionRange(0, 99999);
-
-            document.execCommand("copy");
-
-            alert("Copied: " + copyText.value);
         });
 
         document.getElementById('submitBtn').disabled = true;
