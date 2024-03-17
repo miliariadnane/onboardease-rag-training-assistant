@@ -24,6 +24,9 @@
             <form id="uploadForm" enctype="multipart/form-data">
                 <h3 class="text-center mb-3"><h3 class="text-center mb-3">Upload your training documents or enter URLs!</h3></h3>
                 <input type="text" id="linkInput" placeholder="Enter a link and press Enter" class="form-control mb-3">
+                <div id="warningMessage" class="text-danger mb-3" style="display: none;">
+                    <i class="fas fa-exclamation-triangle"></i> Please enter a link in the input field before pressing Enter.
+                </div>
                 <div id="linkBadges" class="mb-3"></div>
                 <input type="file" name="files" multiple class="form-control mb-3">
                 <button type="button" id="uploadButton" class="btn btn-primary mb-3">Upload</button>

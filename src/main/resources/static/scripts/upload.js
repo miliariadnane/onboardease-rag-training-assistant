@@ -3,7 +3,9 @@ const badges = document.getElementById('linkBadges');
 const linkInput = document.getElementById('linkInput');
 const table = document.getElementById('linkTable');
 const tableDiv = document.getElementById('linkTableDiv');
+const warningMessage = document.getElementById('warningMessage');
 
+// Function to refresh the badges and links
 function refreshBadgeAndLinks() {
     Array.from(badges.children).forEach((badge, index) => {
         // Update the text content of each row in the table (skip the header row)
@@ -16,7 +18,16 @@ function refreshBadgeAndLinks() {
 
 linkInput.addEventListener('keydown', function (event) {
     if (event.key === 'Enter') {
+
         event.preventDefault();
+
+        if (this.value.trim() === '') {
+            warningMessage.style.display = 'block';
+            return;
+        }
+
+        warningMessage.style.display = 'none';
+
         links.push(this.value);
 
         const badge = document.createElement('span');
