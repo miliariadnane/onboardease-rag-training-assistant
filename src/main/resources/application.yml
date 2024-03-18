@@ -1,6 +1,5 @@
 langchain:
   api:
-    key: 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
   timeout: 30
 
 spring:

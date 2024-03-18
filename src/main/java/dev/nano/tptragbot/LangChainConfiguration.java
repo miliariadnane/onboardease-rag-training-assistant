@@ -26,9 +26,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class LangChainConfiguration {
 
-    //@Value("${langchain.api.key}")
-    //private String apiKey;
-
     @Value("${langchain.timeout}")
     private Long timeout;
 
@@ -45,7 +42,7 @@ public class LangChainConfiguration {
         String apiKey = apiKeyHolder.getApiKey();
 
         if (apiKey == null || apiKey.isEmpty()) {
-            apiKey = "demo"; // Use the demo key if no API key is provided
+            apiKey = "demo"; // demo key if no API key is provided
         }
 
         log.info("Using API key: " + apiKey);
