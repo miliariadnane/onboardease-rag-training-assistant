@@ -1,54 +1,64 @@
 package dev.nano.tptragbot;
 
+import java.time.Duration;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
+
 import dev.langchain4j.chain.ConversationalRetrievalChain;
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.memory.ChatMemory;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 import dev.langchain4j.model.embedding.AllMiniLmL6V2EmbeddingModel;
 import dev.langchain4j.model.embedding.EmbeddingModel;
-import dev.langchain4j.model.input.PromptTemplate;
 import dev.langchain4j.model.openai.OpenAiChatModel;
 import dev.langchain4j.retriever.EmbeddingStoreRetriever;
 import dev.langchain4j.store.embedding.EmbeddingStore;
 import dev.langchain4j.store.embedding.inmemory.InMemoryEmbeddingStore;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
-import java.time.Duration;
-
-import static dev.nano.tptragbot.Constant.PROMPT_TEMPLATE;
 
 @Configuration
 @RequiredArgsConstructor
 @Slf4j
 public class LangChainConfiguration {
 
-    @Value("${langchain.api.key}")
-    private String apiKey;
+    //@Value("${langchain.api.key}")
+    //private String apiKey;
 
     @Value("${langchain.timeout}")
     private Long timeout;
 
+    private final ApiKeyHolderService apiKeyHolder;
+
     @Bean
-    public ConversationalRetrievalChain chain(
+    @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    protected ConversationalRetrievalChain chain(
             EmbeddingStore<TextSegment> embeddingStore,
             EmbeddingModel embeddingModel,
             ChatMemory chatMemory
     ) {
         log.info("Creating ConversationalRetrievalChain bean");
-        return ConversationalRetrievalChain.builder()
+        String apiKey = apiKeyHolder.getApiKey();
+
+        if (apiKey == null || apiKey.isEmpty()) {
+            apiKey = "demo"; // Use the demo key if no API key is provided
+        }
+
+        log.info("Using API key: " + apiKey);
+
+        ConversationalRetrievalChain.ConversationalRetrievalChainBuilder chainBuilder = ConversationalRetrievalChain.builder()
+                .retriever(EmbeddingStoreRetriever.from(embeddingStore, embeddingModel))
+                .chatMemory(chatMemory)
                 .chatLanguageModel(OpenAiChatModel.builder()
                         .apiKey(apiKey)
                         .timeout(Duration.ofSeconds(timeout))
-                        .build()
-                )
-                .promptTemplate(PromptTemplate.from(PROMPT_TEMPLATE))
-                .retriever(EmbeddingStoreRetriever.from(embeddingStore, embeddingModel))
-                .chatMemory(chatMemory)
-                .build();
+                        .build());
+
+        return chainBuilder.build();
     }
 
     @Bean

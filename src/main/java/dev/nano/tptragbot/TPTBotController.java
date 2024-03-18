@@ -1,9 +1,10 @@
 package dev.nano.tptragbot;
 
-import dev.langchain4j.data.document.Document;
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,10 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import dev.langchain4j.data.document.Document;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequiredArgsConstructor
@@ -28,6 +29,8 @@ public class TPTBotController {
     private final FileStorageService fileStorageService;
     private final TPTBotService tptBotService;
     private final ProgressService progressService;
+    private final ApiKeyHolderService apiKeyHolderService;
+
 
     // This map will store the uploaded documents for each session
     private final Map<String, DocumentSources> documentMap = new ConcurrentHashMap<>();
@@ -35,6 +38,12 @@ public class TPTBotController {
     @GetMapping
     public String home() {
         return "index";
+    }
+
+    @PostMapping("/api-key")
+    public ResponseEntity<Void> setApiKey(@RequestBody String apiKey) {
+        apiKeyHolderService.setApiKey(apiKey);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/ask")
@@ -81,7 +90,12 @@ public class TPTBotController {
     }
 
     @PostMapping("/upload")
-    public String upload(@RequestParam("files") MultipartFile[] files, @RequestParam("url") List<String> urls, HttpServletRequest request, Model model) {
+    public String upload(
+            @RequestParam("files") MultipartFile[] files,
+            @RequestParam("url") List<String> urls,
+            HttpServletRequest request,
+            Model model
+    ) {
         log.info("Received upload request with {} files and URLs: {}", files.length, urls);
 
         if (files.length == 0) {
@@ -107,7 +121,7 @@ public class TPTBotController {
 
         // Store the documents for later ingestion
         documentMap.put(request.getSession().getId(), new DocumentSources(urls, paths));
-        log.info("Stored URLs and paths for session: {}", request.getSession().getId());
+        // log.info("Stored URLs and paths for session: {}", request.getSession().getId());
 
         model.addAttribute("successMessage", "Files uploaded successfully");
         return "index";

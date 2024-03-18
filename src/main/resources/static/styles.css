@@ -5,6 +5,13 @@
     left: 50%;
 }
 
+.horizontal-divider {
+    border-top: 1px solid #0d6efd;
+    width: 100%;
+    position: relative;
+    top: 50%;
+}
+
 .btn-primary:hover {
     background-color: #0b5ed7;
     transition: background-color 0.3s ease;
