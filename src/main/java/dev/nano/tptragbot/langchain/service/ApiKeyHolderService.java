@@ -1,4 +1,4 @@
-package dev.nano.tptragbot;
+package dev.nano.tptragbot.langchain.service;
 
 import lombok.Getter;
 import lombok.Setter;

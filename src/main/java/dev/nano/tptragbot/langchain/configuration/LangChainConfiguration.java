@@ -1,7 +1,8 @@
-package dev.nano.tptragbot;
+package dev.nano.tptragbot.langchain.configuration;
 
 import java.time.Duration;
 
+import dev.nano.tptragbot.langchain.service.ApiKeyHolderService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;

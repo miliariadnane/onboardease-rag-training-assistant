@@ -1,5 +1,6 @@
 package dev.nano.tptragbot;
 
+import dev.nano.tptragbot.langchain.service.TPTBotService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

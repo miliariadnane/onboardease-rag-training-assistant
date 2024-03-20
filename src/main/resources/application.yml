@@ -1,5 +1,4 @@
 langchain:
-  api:
   timeout: 30
 
 spring:

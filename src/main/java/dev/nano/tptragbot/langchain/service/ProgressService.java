@@ -1,5 +1,6 @@
-package dev.nano.tptragbot;
+package dev.nano.tptragbot.langchain.service;
 
+import dev.nano.tptragbot.langchain.model.Progress;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;

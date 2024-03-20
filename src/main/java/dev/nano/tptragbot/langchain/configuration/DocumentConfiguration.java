@@ -1,4 +1,4 @@
-package dev.nano.tptragbot;
+package dev.nano.tptragbot.langchain.configuration;
 
 import java.util.ArrayList;
 import java.util.List;

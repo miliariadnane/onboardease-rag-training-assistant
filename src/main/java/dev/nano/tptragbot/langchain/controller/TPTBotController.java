@@ -1,10 +1,18 @@
-package dev.nano.tptragbot;
+package dev.nano.tptragbot.langchain.controller;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import dev.nano.tptragbot.langchain.model.DocumentSources;
+import dev.nano.tptragbot.langchain.model.Progress;
+import dev.nano.tptragbot.langchain.service.TPTBotService;
+import dev.nano.tptragbot.langchain.configuration.DocumentConfiguration;
+import dev.nano.tptragbot.langchain.service.ApiKeyHolderService;
+import dev.nano.tptragbot.langchain.service.DocumentIngestionService;
+import dev.nano.tptragbot.langchain.service.FileStorageService;
+import dev.nano.tptragbot.langchain.service.ProgressService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

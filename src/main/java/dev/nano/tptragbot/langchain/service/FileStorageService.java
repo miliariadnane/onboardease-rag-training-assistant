@@ -1,4 +1,4 @@
-package dev.nano.tptragbot;
+package dev.nano.tptragbot.langchain.service;
 
 import java.io.File;
 import java.io.IOException;

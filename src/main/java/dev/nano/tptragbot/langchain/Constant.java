@@ -1,4 +1,4 @@
-package dev.nano.tptragbot;
+package dev.nano.tptragbot.langchain;
 
 public class Constant {
 

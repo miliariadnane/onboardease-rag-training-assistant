@@ -1,10 +1,10 @@
-package dev.nano.tptragbot;
+package dev.nano.tptragbot.langchain.model;
 
 import lombok.Setter;
 
 public class Progress {
     private int current;
-    
+
     @Setter
     private int total;
 

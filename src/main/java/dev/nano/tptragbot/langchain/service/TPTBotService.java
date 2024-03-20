@@ -1,4 +1,4 @@
-package dev.nano.tptragbot;
+package dev.nano.tptragbot.langchain.service;
 
 import dev.langchain4j.chain.ConversationalRetrievalChain;
 import lombok.RequiredArgsConstructor;
