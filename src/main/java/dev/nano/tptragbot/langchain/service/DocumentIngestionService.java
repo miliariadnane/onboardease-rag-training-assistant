@@ -3,6 +3,7 @@ package dev.nano.tptragbot.langchain.service;
 import dev.langchain4j.data.document.Document;
 import dev.langchain4j.data.document.splitter.DocumentSplitters;
 import dev.langchain4j.data.segment.TextSegment;
+import dev.langchain4j.model.Tokenizer;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.store.embedding.EmbeddingStore;
 import dev.langchain4j.store.embedding.EmbeddingStoreIngestor;
@@ -23,12 +24,14 @@ public class DocumentIngestionService {
     private final EmbeddingModel embeddingModel;
     private final EmbeddingStore<TextSegment> embeddingStore;
     private final DocumentConfiguration documentConfiguration;
+    private final Tokenizer tokenizer;
 
     public void ingestDocuments(List<String> urls, List<String> paths, Progress progress) {
         log.info("Starting document ingestion");
 
         EmbeddingStoreIngestor ingestor = EmbeddingStoreIngestor.builder()
-                .documentSplitter(DocumentSplitters.recursive(500, 0))
+                .documentSplitter(
+                        DocumentSplitters.recursive(500, 100, tokenizer))
                 .embeddingModel(embeddingModel)
                 .embeddingStore(embeddingStore)
                 .build();

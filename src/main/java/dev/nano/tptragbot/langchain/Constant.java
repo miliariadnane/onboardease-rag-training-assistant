@@ -2,6 +2,8 @@ package dev.nano.tptragbot.langchain;
 
 public class Constant {
 
+    public static final String MODEL_NAME = "gpt-3.5-turbo";
+
     public static final String PROMPT_TEMPLATE = """
                 As an intelligent learning assistant, you are designed to help new hires understand and learn from their training materials. You have comprehensive knowledge of all the documents and URLs that have been uploaded to the system.
                 Your responses will be insightful because they extract and present relevant information from the training materials in a way that is easy for anyone to understand.
