@@ -1,2 +1,11 @@
 langchain:
   timeout: 30
+
+spring:
+  datasource:
+      username: postgres
+      password: postgres
+      url: jdbc:postgresql://localhost:5433/vector_store
+  ai:
+    openai:
+      api-key: ${OPENAI_KEY}
