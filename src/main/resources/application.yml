@@ -1,7 +1,2 @@
 langchain:
   timeout: 30
-
-spring:
-  devtools:
-    restart:
-      enabled: true

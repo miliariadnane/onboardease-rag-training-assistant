@@ -21,7 +21,9 @@ public class FileStorageService {
 
     private Path fileStorageLocation;
     private static final long MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
-    private static final Set<String> ALLOWED_EXTENSIONS = Set.of("pdf", "txt");
+    private static final Set<String> ALLOWED_EXTENSIONS = Set.of(
+            "pdf", "txt", "doc", "docx", "ppt", "pptx", "xls", "xlsx", "csv"
+    );
 
     @PostConstruct
     public void init() {
