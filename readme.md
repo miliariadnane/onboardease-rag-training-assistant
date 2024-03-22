@@ -5,3 +5,7 @@ Users can upload documents or enter URLs for training materials, and the applica
 Built with Spring Boot, Thymeleaf, and Langchain4j.
 
 ![OnboardEase](docs/app.png)
+
+
+
+### 🚧🚧 Work in Progress 🚧🚧
