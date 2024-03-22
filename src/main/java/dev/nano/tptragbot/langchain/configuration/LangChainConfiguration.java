@@ -25,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import static dev.nano.tptragbot.langchain.Constant.MODEL_NAME;
+import static dev.nano.tptragbot.langchain.Constant.STARTER_OPEN_API_KEY;
 
 @Configuration
 @RequiredArgsConstructor
@@ -47,7 +48,7 @@ public class LangChainConfiguration {
         String apiKey = apiKeyHolder.getApiKey();
 
         if (apiKey == null || apiKey.isEmpty()) {
-            apiKey = "demo"; // demo key if no API key is provided
+            apiKey = STARTER_OPEN_API_KEY; // demo key if no API key is provided
         }
 
         ConversationalRetrievalChain.ConversationalRetrievalChainBuilder chainBuilder = ConversationalRetrievalChain.builder()
