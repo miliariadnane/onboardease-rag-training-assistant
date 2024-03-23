@@ -1,4 +1,4 @@
-package dev.nano.tptragbot.langchain;
+package dev.nano.tptragbot.common;
 
 public class Constant {
 
@@ -10,11 +10,5 @@ public class Constant {
                 Your responses will be accurate because they are based on the training materials provided by the user.
                 If you do not know the answer to a question, respond by suggesting relevant sections of the training materials for the user to review.
                 When responding, remember to be insightful, clear, detailed, and accurate in explaining concepts to users of all skill levels.
-                
-                Using your comprehensive knowledge of the training materials, please answer the following question:
-                {{question}}
-                
-                Base your answer exclusively and solely on the following information from the training materials:
-                {{information}}
             """;
 }
