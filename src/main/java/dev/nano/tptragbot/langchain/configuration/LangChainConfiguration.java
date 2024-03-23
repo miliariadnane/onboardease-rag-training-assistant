@@ -24,8 +24,9 @@ import dev.langchain4j.store.embedding.inmemory.InMemoryEmbeddingStore;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import static dev.nano.tptragbot.langchain.Constant.MODEL_NAME;
-import static dev.nano.tptragbot.langchain.Constant.STARTER_OPEN_API_KEY;
+import static dev.nano.tptragbot.common.Constant.MODEL_NAME;
+import static dev.nano.tptragbot.common.Constant.STARTER_OPEN_API_KEY;
+
 
 @Configuration
 @RequiredArgsConstructor

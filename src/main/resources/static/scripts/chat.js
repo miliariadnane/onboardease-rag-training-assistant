@@ -39,7 +39,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: "POST",
-            url: "/ask",
+            url: "/langchain/ask",
             data: JSON.stringify({ question: $("#questionInput").val() }),
             contentType: "application/json; charset=utf-8",
             dataType: "text",

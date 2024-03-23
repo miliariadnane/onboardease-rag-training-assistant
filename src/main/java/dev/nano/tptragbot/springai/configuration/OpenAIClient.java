@@ -6,6 +6,8 @@ import org.springframework.ai.openai.api.OpenAiApi;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import static dev.nano.tptragbot.common.Constant.MODEL_NAME;
+
 @Component
 public final class OpenAIClient {
 
@@ -15,7 +17,7 @@ public final class OpenAIClient {
     public OpenAiChatClient getOpenAiChatClient() {
         OpenAiApi openAiApi = new OpenAiApi(apiKey);
         OpenAiChatOptions options = new OpenAiChatOptions.Builder()
-                .withModel("gpt-3.5-turbo")
+                .withModel(MODEL_NAME)
                 .build();
         return new OpenAiChatClient(openAiApi, options);
     }

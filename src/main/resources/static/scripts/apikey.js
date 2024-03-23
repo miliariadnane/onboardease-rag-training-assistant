@@ -24,7 +24,7 @@ document.getElementById('applyApiKeyButton').addEventListener('click', function(
         uploadButton.disabled = true;
     } else {
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', '/api-key', true);
+        xhr.open('POST', '/langchain/api-key', true);
         xhr.setRequestHeader('Content-Type', 'application/json');
 
         xhr.onload = function () {
@@ -46,7 +46,7 @@ document.getElementById('applyApiKeyButton').addEventListener('click', function(
                 uploadButton.disabled = false;
             } else {
                 console.error(xhr.responseText);
-                
+
                 swal(
                     'Error!',
                     'Failed to set the API key.',
