@@ -1,4 +1,4 @@
-package dev.nano.tptragbot.common;
+package dev.nano.tptragbot.common.model;
 
 import java.util.List;
 

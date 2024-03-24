@@ -1,8 +1,11 @@
 document.getElementById('ingestButton').addEventListener('click', function(event) {
     event.preventDefault();
 
+    let model = getSelectedModel();
+    let ingestUrl = '/' + model + '/ingest';
+
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/langchain/ingest', true);
+    xhr.open('POST', ingestUrl, true);
 
     document.getElementById('ingestSpinner').style.display = 'inline-block';
 
@@ -17,9 +20,11 @@ document.getElementById('ingestButton').addEventListener('click', function(event
                 closeOnEsc: false
             });
 
+            var progressUrl = '/' + model + '/progress';
+
             // Start polling for progress
             var progressInterval = setInterval(function() {
-                $.get('/langchain/progress', function(data) {
+                $.get(progressUrl, function(data) {
                     document.getElementById('progressBar').value = data;
                     document.getElementById('progressText').textContent = data + '%';
 

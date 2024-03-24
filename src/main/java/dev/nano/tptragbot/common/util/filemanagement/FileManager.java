@@ -1,4 +1,10 @@
-package dev.nano.tptragbot.langchain.service;
+package dev.nano.tptragbot.common.util.filemanagement;
+
+import jakarta.annotation.PostConstruct;
+import org.apache.commons.io.FilenameUtils;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -7,19 +13,14 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Set;
 
-import jakarta.annotation.PostConstruct;
-import org.apache.commons.io.FilenameUtils;
-import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
-
 @Service
-public class FileStorageService {
+public class FileManager {
 
     private Path fileStorageLocation;
+
     private static final long MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
     private static final Set<String> ALLOWED_EXTENSIONS = Set.of(
-            "pdf", "txt", "doc", "docx", "ppt", "pptx", "xls", "xlsx", "csv"
+            "pdf", "txt", "xls", "xlsx", "csv", "json"
     );
 
     @PostConstruct

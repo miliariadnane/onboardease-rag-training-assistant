@@ -3,11 +3,14 @@ package dev.nano.tptragbot.springai.service;
 import dev.nano.tptragbot.springai.configuration.OpenAIClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.SystemPromptTemplate;
 import org.springframework.ai.reader.ExtractedTextFormatter;
+import org.springframework.ai.reader.JsonReader;
+import org.springframework.ai.reader.TextReader;
 import org.springframework.ai.reader.pdf.PagePdfDocumentReader;
 import org.springframework.ai.reader.pdf.config.PdfDocumentReaderConfig;
 import org.springframework.ai.transformer.splitter.TokenTextSplitter;
@@ -21,7 +24,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static dev.nano.tptragbot.common.Constant.PROMPT_TEMPLATE;
+import static dev.nano.tptragbot.common.constant.Constant.PROMPT_TEMPLATE;
+import static dev.nano.tptragbot.common.util.reader.FileReaderUtil.readCsvFile;
+import static dev.nano.tptragbot.common.util.reader.FileReaderUtil.readExcelFile;
 
 @Service
 @RequiredArgsConstructor
@@ -48,27 +53,53 @@ public class SpringAiService {
     }
 
 
-    public void textEmbedding(Resource[] pdfResources) {
+    public void textEmbedding(Resource[] resources) {
         jdbcTemplate.update("delete from vector_store");
-
-        var config = PdfDocumentReaderConfig.builder()
-                .withPageExtractedTextFormatter(
-                        new ExtractedTextFormatter.Builder()
-                                .withNumberOfBottomTextLinesToDelete(3)
-                                .withNumberOfTopPagesToSkipBeforeDelete(1)
-                                .build()
-                )
-                .withPagesPerDocument(1)
-                .build();
 
         StringBuilder content = new StringBuilder();
 
-        log.info("Reading PDFs...");
-        for (Resource resource : pdfResources) {
-            PagePdfDocumentReader pdfDocumentReader = new PagePdfDocumentReader(resource, config);
-            List<Document> documentList = pdfDocumentReader.get();
+        log.info("Reading files...");
+        for (Resource resource : resources) {
+            String filename = resource.getFilename();
+            String extension = FilenameUtils.getExtension(filename);
+
+            List<Document> documentList;
+            switch (extension) {
+                case "pdf":
+                    var pdfConfig = PdfDocumentReaderConfig.builder()
+                            .withPageExtractedTextFormatter(
+                                    new ExtractedTextFormatter.Builder()
+                                            .withNumberOfBottomTextLinesToDelete(3)
+                                            .withNumberOfTopPagesToSkipBeforeDelete(1)
+                                            .build()
+                            )
+                            .withPagesPerDocument(1)
+                            .build();
+                    PagePdfDocumentReader pdfDocumentReader = new PagePdfDocumentReader(resource, pdfConfig);
+                    documentList = pdfDocumentReader.get();
+                    break;
+                case "txt":
+                    TextReader textDocumentReader = new TextReader(resource);
+                    documentList = textDocumentReader.get();
+                    break;
+                case "json":
+                    JsonReader jsonDocumentReader = new JsonReader(resource);
+                    documentList = jsonDocumentReader.get();
+                    break;
+                case "xls", "xlsx":
+                    String text = readExcelFile(resource);
+                    documentList = List.of(new Document(text));
+                    break;
+                case "csv":
+                    String csvText = readCsvFile(resource);
+                    documentList = List.of(new Document(csvText));
+                    break;
+                default:
+                    throw new IllegalArgumentException("Unsupported file type: " + extension);
+            }
+
             content.append(documentList.stream().map(Document::getContent)
-                    .collect(Collectors.joining("\n")))
+                            .collect(Collectors.joining("\n")))
                     .append("\n");
         }
 

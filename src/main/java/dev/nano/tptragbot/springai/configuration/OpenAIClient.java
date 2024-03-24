@@ -6,7 +6,7 @@ import org.springframework.ai.openai.api.OpenAiApi;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import static dev.nano.tptragbot.common.Constant.MODEL_NAME;
+import static dev.nano.tptragbot.common.constant.Constant.MODEL_NAME;
 
 @Component
 public final class OpenAIClient {

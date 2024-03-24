@@ -88,7 +88,10 @@ document.getElementById('uploadButton').addEventListener('click', function(event
     }
 
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/langchain/upload', true);
+    let model = getSelectedModel();
+    let uploadUrl = '/' + model + '/upload';
+
+    xhr.open('POST', uploadUrl, true);
 
     document.getElementById('uploadSpinner').style.display = 'inline-block';
 

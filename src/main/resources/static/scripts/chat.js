@@ -37,9 +37,12 @@ $(document).ready(function () {
         appendMessage(questionValue, 'user');
         document.getElementById('loadingSpinner').style.display = 'block';
 
+        let model = getSelectedModel();
+        let askUrl = '/' + model + '/ask';
+
         $.ajax({
             type: "POST",
-            url: "/langchain/ask",
+            url: askUrl,
             data: JSON.stringify({ question: $("#questionInput").val() }),
             contentType: "application/json; charset=utf-8",
             dataType: "text",

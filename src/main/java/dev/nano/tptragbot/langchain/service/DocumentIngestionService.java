@@ -7,7 +7,7 @@ import dev.langchain4j.model.Tokenizer;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.store.embedding.EmbeddingStore;
 import dev.langchain4j.store.embedding.EmbeddingStoreIngestor;
-import dev.nano.tptragbot.langchain.model.Progress;
+import dev.nano.tptragbot.common.model.Progress;
 import dev.nano.tptragbot.langchain.configuration.DocumentConfiguration;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

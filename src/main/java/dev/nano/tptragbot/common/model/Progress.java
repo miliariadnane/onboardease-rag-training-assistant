@@ -1,4 +1,4 @@
-package dev.nano.tptragbot.langchain.model;
+package dev.nano.tptragbot.common.model;
 
 import lombok.Setter;
 

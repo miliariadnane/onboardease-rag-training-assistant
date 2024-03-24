@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import dev.nano.tptragbot.common.DocumentSources;
-import dev.nano.tptragbot.langchain.model.Progress;
+import dev.nano.tptragbot.common.model.DocumentSources;
+import dev.nano.tptragbot.common.util.filemanagement.FileManager;
+import dev.nano.tptragbot.common.model.Progress;
 import dev.nano.tptragbot.langchain.service.TPTBotService;
 import dev.nano.tptragbot.langchain.configuration.DocumentConfiguration;
 import dev.nano.tptragbot.langchain.service.ApiKeyHolderService;
 import dev.nano.tptragbot.langchain.service.DocumentIngestionService;
-import dev.nano.tptragbot.langchain.service.FileStorageService;
 import dev.nano.tptragbot.langchain.service.ProgressService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -36,7 +36,7 @@ public class TPTBotController {
 
     private final DocumentConfiguration documentConfiguration;
     private final DocumentIngestionService documentIngestionService;
-    private final FileStorageService fileStorageService;
+    private final FileManager fileManager;
     private final TPTBotService tptBotService;
     private final ProgressService progressService;
     private final ApiKeyHolderService apiKeyHolderService;
@@ -79,7 +79,7 @@ public class TPTBotController {
         List<String> paths = new ArrayList<>();
         for (MultipartFile file : files) {
             if (!file.isEmpty()) {
-                String path = fileStorageService.storeFile(file);
+                String path = fileManager.storeFile(file);
                 paths.add(path);
                 log.info("Stored file at path: {}", path);
             }
@@ -113,12 +113,6 @@ public class TPTBotController {
 
         model.addAttribute("progress", progress.getPercentage());
         return "index";
-    }
-
-    @GetMapping("/progress")
-    public ResponseEntity<Integer> getProgress(HttpServletRequest request) {
-        Progress progress = progressService.getProgress(request.getSession().getId());
-        return ResponseEntity.ok(progress.getPercentage());
     }
 
     @PostMapping("/ask")
