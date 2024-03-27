@@ -62,8 +62,10 @@ public class SpringAiService {
         for (Resource resource : resources) {
             String filename = resource.getFilename();
             String extension = FilenameUtils.getExtension(filename);
+            System.out.println("Reading file: " + filename);
 
             List<Document> documentList;
+            System.out.println("Extension: " + extension);
             switch (extension) {
                 case "pdf":
                     var pdfConfig = PdfDocumentReaderConfig.builder()
@@ -99,8 +101,7 @@ public class SpringAiService {
             }
 
             content.append(documentList.stream().map(Document::getContent)
-                            .collect(Collectors.joining("\n")))
-                    .append("\n");
+                    .collect(Collectors.joining("\n"))).append("\n");
         }
 
         log.info("Splitting content into chunks...");

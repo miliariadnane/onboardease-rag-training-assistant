@@ -22,18 +22,15 @@
         <div class="col-6">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title text-center">API Key and Model Selection</h5>
-                    <div class="input-group mb-3">
-                        <select class="custom-select" id="modelSelection">
-                            <option value="langchain" selected>Langchain</option>
-                            <option value="spring-ai">Spring AI</option>
-                            <!-- <option value="model1" selected>Open API</option>
-                            <option value="model2" disabled>HuggingFace 🔜</option>
-                            <option value="model3" disabled>Ollama 🔜</option> -->
-                        </select>
-                        <input type="text" id="apiKeyInput" class="form-control" placeholder="Enter your API key">
-                        <div class="input-group-append mr-2">
-                            <button id="applyApiKeyButton" class="btn btn-danger"><i id="lockIcon" class="fas fa-lock-open text-white"></i></button>
+                    <h5 class="card-title text-center">Library Selection</h5>
+                    <div class="row justify-content-center">
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <select class="form-select" id="modelSelection">
+                                    <option value="langchain" selected>Langchain</option>
+                                    <option value="spring-ai">Spring AI</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -147,7 +144,6 @@
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<script src="/scripts/apikey.js"></script>
 <script src="/scripts/upload.js"></script>
 <script src="/scripts/ingest.js"></script>
 <script src="/scripts/chat.js"></script>

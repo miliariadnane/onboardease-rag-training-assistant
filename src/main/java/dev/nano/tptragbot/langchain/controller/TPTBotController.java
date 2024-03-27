@@ -10,7 +10,6 @@ import dev.nano.tptragbot.common.util.filemanagement.FileManager;
 import dev.nano.tptragbot.common.model.Progress;
 import dev.nano.tptragbot.langchain.service.TPTBotService;
 import dev.nano.tptragbot.langchain.configuration.DocumentConfiguration;
-import dev.nano.tptragbot.langchain.service.ApiKeyHolderService;
 import dev.nano.tptragbot.langchain.service.DocumentIngestionService;
 import dev.nano.tptragbot.langchain.service.ProgressService;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +38,6 @@ public class TPTBotController {
     private final FileManager fileManager;
     private final TPTBotService tptBotService;
     private final ProgressService progressService;
-    private final ApiKeyHolderService apiKeyHolderService;
 
 
     // This map will store the uploaded documents for each session
@@ -49,14 +47,6 @@ public class TPTBotController {
     public String home() {
         return "index";
     }
-
-    @PostMapping("/api-key")
-    public ResponseEntity<Void> setApiKey(@RequestBody String apiKey) {
-        apiKeyHolderService.setApiKey(apiKey);
-        return ResponseEntity.ok().build();
-    }
-
-
 
     @PostMapping("/upload")
     public String upload(
@@ -113,6 +103,12 @@ public class TPTBotController {
 
         model.addAttribute("progress", progress.getPercentage());
         return "index";
+    }
+
+    @GetMapping("/progress")
+    public ResponseEntity<Integer> getProgress(HttpServletRequest request) {
+        Progress progress = progressService.getProgress(request.getSession().getId());
+        return ResponseEntity.ok(progress.getPercentage());
     }
 
     @PostMapping("/ask")

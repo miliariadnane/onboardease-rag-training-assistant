@@ -24,6 +24,8 @@ document.getElementById('ingestButton').addEventListener('click', function(event
 
             // Start polling for progress
             var progressInterval = setInterval(function() {
+                let progressUrl = '/' + model + '/progress';
+
                 $.get(progressUrl, function(data) {
                     document.getElementById('progressBar').value = data;
                     document.getElementById('progressText').textContent = data + '%';

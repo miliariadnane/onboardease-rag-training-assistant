@@ -1,4 +1,5 @@
 langchain:
+  api-key: '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'
   timeout: 30
 
 spring:
@@ -8,4 +9,4 @@ spring:
       url: jdbc:postgresql://localhost:5433/vector_store
   ai:
     openai:
-      api-key: ${OPENAI_KEY}
+      api-key: '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'
