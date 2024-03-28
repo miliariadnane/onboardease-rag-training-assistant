@@ -10,6 +10,15 @@ spring:
   devtools:
     restart:
       exclude: "**/uploads/**/*"
+  threads:
+    virtual:
+      enabled: true
   ai:
     openai:
       api-key: ${OPENAI_API_KEY}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

@@ -1,7 +1,6 @@
 package dev.nano.tptragbot.springai.service;
 
 import dev.nano.tptragbot.springai.configuration.OpenAIClient;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.ai.chat.messages.Message;
@@ -16,9 +15,11 @@ import org.springframework.ai.reader.pdf.config.PdfDocumentReaderConfig;
 import org.springframework.ai.transformer.splitter.TokenTextSplitter;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.ai.document.Document;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.util.List;
 import java.util.Map;
@@ -29,13 +30,21 @@ import static dev.nano.tptragbot.common.util.reader.FileReaderUtil.readCsvFile;
 import static dev.nano.tptragbot.common.util.reader.FileReaderUtil.readExcelFile;
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
-public class SpringAiService {
+public class SpringAIService {
 
     private final VectorStore vectorStore;
     private final JdbcTemplate jdbcTemplate;
     private final OpenAIClient openAiChatClient;
+
+    @Autowired
+    public SpringAIService(VectorStore vectorStore,
+                           JdbcTemplate jdbcTemplate) {
+        Assert.notNull(vectorStore, "VectorStore is required");
+        this.vectorStore = vectorStore;
+        this.jdbcTemplate = jdbcTemplate;
+        this.openAiChatClient = new OpenAIClient();
+    }
 
     public String askLLM(String query) {
 
@@ -62,10 +71,8 @@ public class SpringAiService {
         for (Resource resource : resources) {
             String filename = resource.getFilename();
             String extension = FilenameUtils.getExtension(filename);
-            System.out.println("Reading file: " + filename);
 
             List<Document> documentList;
-            System.out.println("Extension: " + extension);
             switch (extension) {
                 case "pdf":
                     var pdfConfig = PdfDocumentReaderConfig.builder()

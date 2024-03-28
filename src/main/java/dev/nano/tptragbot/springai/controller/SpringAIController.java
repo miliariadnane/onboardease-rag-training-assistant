@@ -1,7 +1,7 @@
 package dev.nano.tptragbot.springai.controller;
 
 import dev.nano.tptragbot.common.util.filemanagement.FileManager;
-import dev.nano.tptragbot.springai.service.SpringAiService;
+import dev.nano.tptragbot.springai.service.SpringAIService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,10 +23,10 @@ import java.util.concurrent.ConcurrentHashMap;
 @RequestMapping("/spring-ai")
 @RequiredArgsConstructor
 @Slf4j
-public class SpringAiController {
+public class SpringAIController {
 
     private final FileManager filemanager;
-    private final SpringAiService springAiService;
+    private final SpringAIService springAiService;
 
     // This map will store the uploaded documents for each session
     private final Map<String, List<String>> documentMap = new ConcurrentHashMap<>();
