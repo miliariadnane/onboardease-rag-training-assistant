@@ -18,6 +18,20 @@
 		Built with Spring Boot Langchain4j and Spring AI.
 	</description>
 
+	<!-- Start - OnboardEase Project Owners -->
+	<developers>
+		<developer>
+			<name>Adnane Miliari</name>
+			<email>miliari.adnane@gmail.com</email>
+			<roles>
+				<role>
+					Backend Developer
+				</role>
+			</roles>
+		</developer>
+	</developers>
+	<!-- End - OnboardEase Project Owners -->
+
 	<properties>
 		<java.version>21</java.version>
 		<commons-io.version>2.15.1</commons-io.version>
