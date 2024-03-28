@@ -40,3 +40,6 @@ build/
 .mvn/wrapper/maven-wrapper.properties
 mvnw
 mvnw.cmd
+
+### uploads folder ###
+/src/main/resources/uploads/*

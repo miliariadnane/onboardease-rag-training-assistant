@@ -1,5 +1,5 @@
 langchain:
-  api-key: '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'
+  api-key: ${OPENAI_API_KEY}
   timeout: 30
 
 spring:
@@ -7,6 +7,9 @@ spring:
       username: postgres
       password: postgres
       url: jdbc:postgresql://localhost:5433/vector_store
+  devtools:
+    restart:
+      exclude: "**/uploads/**/*"
   ai:
     openai:
-      api-key: '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'
+      api-key: ${OPENAI_API_KEY}

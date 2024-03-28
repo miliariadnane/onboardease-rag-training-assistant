@@ -27,7 +27,7 @@ public class FileManager {
     public void init() {
         try {
             // Form the directory path where you will be saving the files.
-            fileStorageLocation = Paths.get(System.getProperty("user.dir"), "uploads").toAbsolutePath().normalize();
+            fileStorageLocation = Paths.get(System.getProperty("user.dir"), "src/main/resources/uploads").toAbsolutePath().normalize();
             // Create directory at specified location if it does not exist.
             if (!Files.exists(fileStorageLocation)) {
                 Files.createDirectories(fileStorageLocation);
