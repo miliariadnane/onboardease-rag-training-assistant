@@ -1,7 +1,9 @@
+# Langchain4J configuration
 langchain:
   api-key: ${OPENAI_API_KEY}
   timeout: 30
 
+# Spring configuration
 spring:
   datasource:
       username: postgres
@@ -13,10 +15,12 @@ spring:
   threads:
     virtual:
       enabled: true
+  # Spring AI Configuration
   ai:
     openai:
       api-key: ${OPENAI_API_KEY}
 
+# Spring Boot Actuator
 management:
   endpoints:
     web:
