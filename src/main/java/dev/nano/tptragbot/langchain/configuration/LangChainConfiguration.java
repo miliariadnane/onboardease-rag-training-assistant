@@ -1,5 +1,11 @@
 package dev.nano.tptragbot.langchain.configuration;
 
+import java.time.Duration;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.memory.ChatMemory;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
@@ -12,16 +18,10 @@ import dev.langchain4j.retriever.EmbeddingStoreRetriever;
 import dev.langchain4j.service.AiServices;
 import dev.langchain4j.store.embedding.EmbeddingStore;
 import dev.langchain4j.store.embedding.pgvector.PgVectorEmbeddingStore;
+import static dev.nano.tptragbot.common.constant.Constant.MODEL_NAME;
 import dev.nano.tptragbot.langchain.agent.OnboardTrainingAssistant;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
-import java.time.Duration;
-
-import static dev.nano.tptragbot.common.constant.Constant.MODEL_NAME;
 
 
 @Configuration
@@ -72,10 +72,10 @@ public class LangChainConfiguration {
         return PgVectorEmbeddingStore.builder()
                 .host("localhost")
                 .port(5433)
-                .database("langchain-vector-store")
+                .database("langchain_vector_store")
                 .user(databaseUsername)
                 .password(databasePassword)
-                .table("langchain-vector-store")
+                .table("langchain_vector_store")
                 .dimension(384)
                 .build();
     }
