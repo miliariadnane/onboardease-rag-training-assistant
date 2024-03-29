@@ -18,6 +18,8 @@ import dev.langchain4j.retriever.EmbeddingStoreRetriever;
 import dev.langchain4j.service.AiServices;
 import dev.langchain4j.store.embedding.EmbeddingStore;
 import dev.langchain4j.store.embedding.pgvector.PgVectorEmbeddingStore;
+
+import static dev.nano.tptragbot.common.constant.Constant.LANGCHAIN_VECTOR_STORE_DATABASE_NAME;
 import static dev.nano.tptragbot.common.constant.Constant.MODEL_NAME;
 import dev.nano.tptragbot.langchain.agent.OnboardTrainingAssistant;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +42,8 @@ public class LangChainConfiguration {
 
     @Value("${spring.datasource.username}")
     private String databaseUsername;
+
+
 
     @Bean
     public OnboardTrainingAssistant chain(
@@ -72,10 +76,10 @@ public class LangChainConfiguration {
         return PgVectorEmbeddingStore.builder()
                 .host("localhost")
                 .port(5433)
-                .database("langchain_vector_store")
+                .database(LANGCHAIN_VECTOR_STORE_DATABASE_NAME)
                 .user(databaseUsername)
                 .password(databasePassword)
-                .table("langchain_vector_store")
+                .table(LANGCHAIN_VECTOR_STORE_DATABASE_NAME)
                 .dimension(384)
                 .build();
     }
