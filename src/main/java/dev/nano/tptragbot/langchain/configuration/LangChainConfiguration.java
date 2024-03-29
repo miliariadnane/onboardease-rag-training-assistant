@@ -11,13 +11,15 @@ import dev.langchain4j.model.openai.OpenAiTokenizer;
 import dev.langchain4j.retriever.EmbeddingStoreRetriever;
 import dev.langchain4j.service.AiServices;
 import dev.langchain4j.store.embedding.EmbeddingStore;
-import dev.langchain4j.store.embedding.inmemory.InMemoryEmbeddingStore;
+import dev.langchain4j.store.embedding.pgvector.PgVectorEmbeddingStore;
 import dev.nano.tptragbot.langchain.agent.OnboardTrainingAssistant;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.utility.DockerImageName;
 
 import java.time.Duration;
 
@@ -61,8 +63,21 @@ public class LangChainConfiguration {
 
     @Bean
     public EmbeddingStore<TextSegment> embeddingStore() {
-        log.info("Creating EmbeddingStore bean");
-        return new InMemoryEmbeddingStore<>();
+        log.info("Creating PgVectorEmbeddingStore bean");
+
+        DockerImageName dockerImageName = DockerImageName.parse("pgvector/pgvector:pg16");
+        PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>(dockerImageName);
+        postgreSQLContainer.start();
+
+        return PgVectorEmbeddingStore.builder()
+                .host(postgreSQLContainer.getHost())
+                .port(postgreSQLContainer.getFirstMappedPort())
+                .database(postgreSQLContainer.getDatabaseName())
+                .user(postgreSQLContainer.getUsername())
+                .password(postgreSQLContainer.getPassword())
+                .table("test")
+                .dimension(384)
+                .build();
     }
 
     // chatMemory is a bean that is used to store the chat history
