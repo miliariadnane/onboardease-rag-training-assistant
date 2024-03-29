@@ -1,10 +1,10 @@
 package dev.nano.tptragbot.langchain.service;
 
-import dev.langchain4j.chain.ConversationalRetrievalChain;
+import org.springframework.stereotype.Service;
+
 import dev.nano.tptragbot.langchain.agent.OnboardTrainingAssistant;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor

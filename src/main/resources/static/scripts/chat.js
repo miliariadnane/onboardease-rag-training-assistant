@@ -7,7 +7,7 @@ function appendMessage(message, sender) {
     avatarElement.className = 'avatar';
 
     var textElement = document.createElement('span');
-    textElement.textContent = message;
+    textElement.innerHTML = message.replace(/\n/g, '<br/>');
 
     messageElement.appendChild(avatarElement);
     messageElement.appendChild(textElement);

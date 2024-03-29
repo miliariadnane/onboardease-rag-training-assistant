@@ -1,11 +1,5 @@
 package dev.nano.tptragbot.langchain.configuration;
 
-import java.time.Duration;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.memory.ChatMemory;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
@@ -18,12 +12,17 @@ import dev.langchain4j.retriever.EmbeddingStoreRetriever;
 import dev.langchain4j.service.AiServices;
 import dev.langchain4j.store.embedding.EmbeddingStore;
 import dev.langchain4j.store.embedding.pgvector.PgVectorEmbeddingStore;
-
-import static dev.nano.tptragbot.common.constant.Constant.LANGCHAIN_VECTOR_STORE_DATABASE_NAME;
-import static dev.nano.tptragbot.common.constant.Constant.MODEL_NAME;
 import dev.nano.tptragbot.langchain.agent.OnboardTrainingAssistant;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import java.time.Duration;
+
+import static dev.nano.tptragbot.common.constant.Constant.LANGCHAIN_VECTOR_STORE_DATABASE_NAME;
+import static dev.nano.tptragbot.common.constant.Constant.MODEL_NAME;
 
 
 @Configuration
@@ -51,7 +50,7 @@ public class LangChainConfiguration {
             EmbeddingModel embeddingModel,
             ChatMemory chatMemory
     ) {
-        log.info("Creating OnboardTrainingAssistant Agent bean");
+        log.info("Creating OnboardTrainingAssistant bean");
         return AiServices.builder(OnboardTrainingAssistant.class)
                 .chatLanguageModel(OpenAiChatModel.builder()
                         .apiKey(apiKey)
@@ -72,7 +71,6 @@ public class LangChainConfiguration {
     @Bean
     public EmbeddingStore<TextSegment> embeddingStore() {
         log.info("Creating PgVectorEmbeddingStore bean");
-
         return PgVectorEmbeddingStore.builder()
                 .host("localhost")
                 .port(5433)
@@ -96,24 +94,4 @@ public class LangChainConfiguration {
     Tokenizer tokenizer() {
         return new OpenAiTokenizer(MODEL_NAME);
     }
-
-
-    /*@Bean
-    public ConversationalRetrievalChain chain(
-            EmbeddingStore<TextSegment> embeddingStore,
-            EmbeddingModel embeddingModel,
-            ChatMemory chatMemory
-    ) {
-        log.info("Creating ConversationalRetrievalChain bean");
-        return ConversationalRetrievalChain.builder()
-                .chatLanguageModel(OpenAiChatModel.builder()
-                        .apiKey(apiKey)
-                        .timeout(Duration.ofSeconds(timeout))
-                        .build()
-                )
-                //.promptTemplate(PromptTemplate.from(PROMPT_TEMPLATE))
-                .retriever(EmbeddingStoreRetriever.from(embeddingStore, embeddingModel))
-                .chatMemory(chatMemory)
-                .build();
-    }*/
 }
