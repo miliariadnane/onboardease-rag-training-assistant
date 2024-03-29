@@ -18,8 +18,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.utility.DockerImageName;
 
 import java.time.Duration;
 
@@ -36,6 +34,12 @@ public class LangChainConfiguration {
 
     @Value("${langchain.api-key}")
     private String apiKey;
+
+    @Value("${spring.datasource.password}")
+    private String databasePassword;
+
+    @Value("${spring.datasource.username}")
+    private String databaseUsername;
 
     @Bean
     public OnboardTrainingAssistant chain(
@@ -65,17 +69,13 @@ public class LangChainConfiguration {
     public EmbeddingStore<TextSegment> embeddingStore() {
         log.info("Creating PgVectorEmbeddingStore bean");
 
-        DockerImageName dockerImageName = DockerImageName.parse("pgvector/pgvector:pg16");
-        PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>(dockerImageName);
-        postgreSQLContainer.start();
-
         return PgVectorEmbeddingStore.builder()
-                .host(postgreSQLContainer.getHost())
-                .port(postgreSQLContainer.getFirstMappedPort())
-                .database(postgreSQLContainer.getDatabaseName())
-                .user(postgreSQLContainer.getUsername())
-                .password(postgreSQLContainer.getPassword())
-                .table("test")
+                .host("localhost")
+                .port(5433)
+                .database("langchain-vector-store")
+                .user(databaseUsername)
+                .password(databasePassword)
+                .table("langchain-vector-store")
                 .dimension(384)
                 .build();
     }
