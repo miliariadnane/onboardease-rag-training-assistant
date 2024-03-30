@@ -1,14 +1,15 @@
 package dev.nano.tptragbot.langchain.configuration;
 
+import dev.langchain4j.data.document.Document;
+import dev.langchain4j.data.document.loader.UrlDocumentLoader;
+import dev.langchain4j.data.document.parser.TextDocumentParser;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.stereotype.Component;
-
-import dev.langchain4j.data.document.Document;
-import static dev.langchain4j.data.document.FileSystemDocumentLoader.loadDocument;
-import dev.langchain4j.data.document.UrlDocumentLoader;
-import lombok.extern.slf4j.Slf4j;
+import static dev.langchain4j.data.document.loader.FileSystemDocumentLoader.loadDocument;
 
 
 @Component
@@ -22,8 +23,7 @@ public class DocumentConfiguration {
         // Load documents from URLs
         for (String url : urls) {
             try {
-                documents.add(UrlDocumentLoader.load(url));
-                //log.info("Loaded document from URL: {}", url);
+                documents.add(UrlDocumentLoader.load(url, new TextDocumentParser()));
             } catch (Exception e) {
                 log.error("Failed to load document from URL: {}", url, e);
                 throw new RuntimeException("Failed to load document from " + url, e);
@@ -34,7 +34,6 @@ public class DocumentConfiguration {
         for (String path : paths) {
             try {
                 documents.add(loadDocument(path));
-                //log.info("Loaded document from path: {}", path);
             } catch (Exception e) {
                 log.error("Failed to load document from path: {}", path, e);
                 throw new RuntimeException("Failed to load document from " + path, e);

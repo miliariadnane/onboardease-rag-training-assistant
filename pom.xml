@@ -38,8 +38,8 @@
 		<commons-lang3.version>3.12.0</commons-lang3.version>
 		<apache-poi.version>5.2.5</apache-poi.version>
 		<commons-csv.version>1.8</commons-csv.version>
-		<langchain4j.version>0.24.0</langchain4j.version>
-		<spring-ai.version>0.8.1</spring-ai.version>
+		<langchain4j.version>0.29.0</langchain4j.version>
+		<spring-ai.version>0.8.0-SNAPSHOT</spring-ai.version>
 		<spring-retry.version>2.0.3</spring-retry.version>
 	</properties>
 

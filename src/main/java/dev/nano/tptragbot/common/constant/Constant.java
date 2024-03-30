@@ -2,7 +2,7 @@ package dev.nano.tptragbot.common.constant;
 
 public class Constant {
 
-    public static final String MODEL_NAME = "gpt-3.5-turbo";
+    public static final String MODEL_NAME = "gpt-4";
 
     public static final String LANGCHAIN_VECTOR_STORE_DATABASE_NAME = "langchain_vector_store";
 

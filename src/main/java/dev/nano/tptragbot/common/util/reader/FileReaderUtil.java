@@ -6,7 +6,7 @@ import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+//import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.core.io.Resource;
 
 import org.apache.commons.csv.CSVFormat;
@@ -36,7 +36,7 @@ public class FileReaderUtil {
         return content.toString();
     }
 
-    public static String readExcelFile(Resource resource) {
+    /*public static String readExcelFile(Resource resource) {
         StringBuilder content = new StringBuilder();
 
         try (InputStream is = resource.getInputStream();
@@ -56,7 +56,7 @@ public class FileReaderUtil {
         }
 
         return content.toString();
-    }
+    }*/
 
     private static String getCellText(Cell cell) {
         DataFormatter dataFormatter = new DataFormatter();

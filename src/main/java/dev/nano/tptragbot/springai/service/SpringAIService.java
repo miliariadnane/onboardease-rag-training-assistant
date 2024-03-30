@@ -16,6 +16,9 @@ import org.springframework.ai.transformer.splitter.TokenTextSplitter;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.ai.document.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -27,11 +30,11 @@ import java.util.stream.Collectors;
 
 import static dev.nano.tptragbot.common.constant.Constant.PROMPT_TEMPLATE;
 import static dev.nano.tptragbot.common.util.reader.FileReaderUtil.readCsvFile;
-import static dev.nano.tptragbot.common.util.reader.FileReaderUtil.readExcelFile;
+//import static dev.nano.tptragbot.common.util.reader.FileReaderUtil.readExcelFile;
 
 @Service
 @Slf4j
-public class SpringAIService {
+public class SpringAIService implements CommandLineRunner {
 
     private final VectorStore vectorStore;
     private final JdbcTemplate jdbcTemplate;
@@ -59,6 +62,13 @@ public class SpringAIService {
         Prompt prompt = new Prompt(List.of(systemMessage, userMessage));
 
         return openAiChatClient.getOpenAiChatClient().call(prompt).getResult().getOutput().getContent();
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+        ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+        Resource[] resources = resolver.getResources("classpath:uploads/*");
+        textEmbedding(resources);
     }
 
 
@@ -95,10 +105,10 @@ public class SpringAIService {
                     JsonReader jsonDocumentReader = new JsonReader(resource);
                     documentList = jsonDocumentReader.get();
                     break;
-                case "xls", "xlsx":
-                    String text = readExcelFile(resource);
-                    documentList = List.of(new Document(text));
-                    break;
+//                case "xls", "xlsx":
+//                    String text = readExcelFile(resource);
+//                    documentList = List.of(new Document(text));
+//                    break;
                 case "csv":
                     String csvText = readCsvFile(resource);
                     documentList = List.of(new Document(csvText));
