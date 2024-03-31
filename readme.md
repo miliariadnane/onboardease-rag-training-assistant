@@ -71,6 +71,6 @@ Built with Spring Boot, Langchain4j and Spring AI.
 
 ## Roadmap (In Progress)
 
-- [ ] 🚧 Fix AI text embedding issue (Spring AI) 
+- [x] 🚧 Fix AI text embedding issue (Spring AI) 
 - [ ] 🚧 Implement similarity search to find the most relevant answer to the user (Spring AI)
 - [ ] 🚧 Add system message prompt (Spring AI)
