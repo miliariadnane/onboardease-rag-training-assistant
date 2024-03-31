@@ -1,4 +1,4 @@
-# OnboardEase - Dynamic Learning Assistant with Langchain4j & Spring AI 🦜️🔗 + 🍃🤖️
+### OnboardEase - Dynamic Learning Assistant with Langchain4j & Spring AI 🦜️🔗 + 🍃🤖️
 
 <p align="center">
   <img src="docs/logo.png" alt="Logo" width="100px">
