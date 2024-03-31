@@ -31,9 +31,9 @@ Built with Spring Boot, Langchain4j and Spring AI.
 - **[`📦️ Maven`](https://maven.apache.org/)**
 - **[`🐳️ Docker`](https://www.docker.com/)**
 - **[`🐘️ PostgreDB`](https://www.postgresql.org/)**
-- **[`🌐️ Thymeleaf`](https://www.thymeleaf.org/)**
 - **[`🔍 PgVector (Postgres extension for similarity search)`](https://github.com/pgvector/pgvector)**
 - **[`🧠 Openai`](https://beta.openai.com/docs/)**
+- **[`🌐️ Thymeleaf`](https://www.thymeleaf.org/)**
 
 ## Setup & Installation
 
@@ -74,3 +74,11 @@ Built with Spring Boot, Langchain4j and Spring AI.
 - [x] 🚧 Fix AI text embedding issue (Spring AI) 
 - [ ] 🚧 Implement similarity search to find the most relevant answer to the user (Spring AI)
 - [ ] 🚧 Add system message prompt (Spring AI)
+
+## Support 
+
+- ⭐️️ Star this repository if you find it useful.
+- 🐛️ If you find a bug, raise an issue or fix it and send a pull request.
+- 📢️ If you have any feature requests, raise an issue or send a pull request.
+- 🤲 If you have a moment, don't forget to make a duaa for me and my parents.
+
