@@ -69,6 +69,10 @@ Built with Spring Boot, Langchain4j and Spring AI.
 - 🔁️ Loop through the chunks and return the most relevant answer to the user.
 - 🎉️ Return the answer to the user.
 
+## Diagram of the Application
+
+![OnboardEase](docs/diagram.png)
+
 ## Roadmap (In Progress)
 
 - [x] 🚧 Fix AI text embedding issue (Spring AI) 
@@ -81,4 +85,3 @@ Built with Spring Boot, Langchain4j and Spring AI.
 - 🐛️ If you find a bug, raise an issue or fix it and send a pull request.
 - 📢️ If you have any feature requests, raise an issue or send a pull request.
 - 🤲 If you have a moment, don't forget to make a duaa for me and my parents.
-
